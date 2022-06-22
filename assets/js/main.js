@@ -9,32 +9,59 @@ WHEN all questions are answered or the timer reaches 0
 THEN the game is over
 WHEN the game is over
 THEN I can save my initials and score*/
+
+var controlBtns = $('#controlBtns');
+var start = $('<button>').text("Start Quiz!");
+var startBtn = controlBtns.append(start);
+var yourScore = 0;
 var questionBox = $('#questionBox');
+var answerList = $('#answerList');
+
+/* List of Questions */
 var quizQuestions = [
     {
-        question: "",
-        answers: {
-            a: '',
-            b: '',
-            c: '',
-            d: ''
-        },
-        rightAnswer: ''
+        question: "What is the paragraph element tag?",
+        answers: [
+            { op: '<p>', eval: true },
+            { op: '<br />', eval: false },
+            { op: '<div>', evel: false },
+            { op: '<par>', eval: false }
+        ]
     }
 ];
-
-
-function pushQuestions(questionSet) {
-    for (var i = 0; i < questionSet.length; i++) {
-        questionBox.append('<button class="btn btn-primary" type="button">Button</button>');
-    }
-}
-
 
 /*Score Button*/
 var scoreBoard = $('<button type="button" class="btn btn-outline-success">Score</button>');
 
-/*Score*/
+/* Evaluate Answers */
+function evalAnswer(actualAnswer) {
+    var answerMessage = '';
+    var damage = 0;
+    if (actualAnswer.eval === true) {
+        answerMessage = 'Correct!';
+    } else {
+        answerMessage = 'Incorrect';
+        damage = 50;
+    }
+    return answerMessage, damage;
+}
+
+/*function pushQuestions() {
+    var quest = $('<button>');
+    for (let i in quizQuestions) {
+        questionBox.append(quest.text(quizQuestions[i].answers.a));
+        questionBox.append(quest.text(quizQuestions[i].answers.b));
+        questionBox.append(quest.text(quizQuestions[i].answers.c));
+        questionBox.append(quest.text(quizQuestions[i].answers.d));
+
+    }
+}*/
+
+
+
+
+
+/*Generate ScoreBoard*/
 function genScore() {
 
 }
@@ -44,11 +71,25 @@ function genScore() {
 
 $('main').append(scoreBoard);
 
-function gameStart() {
-    $('section').append('<button id="startBtn">Start</button>');
-    $('#startBtn').on('click', pushQuestions(quizQuestions));
+/* Starts the Quiz */
+function quizStart() {
+    startBtn.hide();
+    var q = 0;
+    //for (i = 0; i < quizQuestions.length; i++) {
+    questionBox.text(quizQuestions[q].question);
+    for (let i in quizQuestions[q].answers) {
+        //answerList.append($('<p>').text(i.op));
+        console.log(quizQuestions[q].answers[i]);
+    }
+    //}
 
 }
 
-gameStart();
+/** Generates Start Button for Main Menu */
+function mainMenu() {
+    startBtn.on('click', quizStart);
 
+
+}
+
+mainMenu();
